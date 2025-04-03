@@ -1,5 +1,8 @@
-import 'package:counter_bloc/bloc/counter_bloc.dart';
-import 'package:counter_bloc/view/counter_screen.dart';
+import 'package:counter_bloc/bloc/counter_bloc/counter_bloc.dart';
+import 'package:counter_bloc/bloc/switch_bloc/switch_bloc.dart';
+import 'package:counter_bloc/bloc/switch_bloc/switch_state.dart';
+import 'package:counter_bloc/view/counter/counter_screen.dart';
+import 'package:counter_bloc/view/switch/switch_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,13 +18,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CounterBloc(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      child: BlocProvider(
+        create: (_) => SwitchBloc(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const SwitchScreen(),
         ),
-        home: const CounterScreen()
       ),
     );
   }
