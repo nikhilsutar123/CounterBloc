@@ -16,25 +16,39 @@ class _TodoScreenState extends State<TodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<TodoBloc, TodoState>(
-        builder: (BuildContext context, state) {
+        builder: (context, state) {
           if (state.todoList.isEmpty) {
             return const Center(
-              child: Text("No Todos found!"),
+              child: Text(
+                "No Todos found!",
+                style: TextStyle(fontSize: 20),
+              ),
             );
+          } else {
+            return ListView.builder(
+                itemCount: state.todoList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: Text(state.todoList[index],
+                        style: const TextStyle(fontSize: 20)),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        context
+                            .read<TodoBloc>()
+                            .add(DeleteTodoEvent(todo: state.todoList[index]));
+                      },
+                    ),
+                  );
+                });
           }
-          return ListView.builder(
-              itemCount: 100,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Text(index.toString()),
-                  trailing: const Icon(Icons.delete),
-                );
-              });
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<TodoBloc>().add(const AddTodoEvent(todo: "Todo Task"));
+          for (int i = 0; i < 4; i++) {
+            context.read<TodoBloc>().add(const AddTodoEvent(todo: "Todo Task"));
+          }
         },
         child: const Icon(Icons.add),
       ),
